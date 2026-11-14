@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>FieldShift — Kayonza pilot</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; }
+  h1 { margin-bottom: 0.2rem; }
+  .sub { color: #555; margin-top: 0; }
+  fieldset { border: 1px solid #ccc; border-radius: 8px; margin: 1rem 0; padding: 1rem; }
+  legend { font-weight: 600; }
+  label { display: block; margin: 0.5rem 0 0.2rem; font-size: 0.9rem; }
+  input, select { padding: 0.35rem; font-size: 0.95rem; }
+  .row { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .row > div { flex: 1; min-width: 180px; }
+  button { background: #1a6b3c; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; font-size: 1rem; cursor: pointer; }
+  button:hover { background: #145230; }
+  .card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; margin: 0.75rem 0; }
+  .FEASIBLE_UNDER_KNOWN_CONSTRAINTS { border-left: 6px solid #2e9e3e; }
+  .FEASIBLE_WITH_CONCERNS { border-left: 6px solid #d99a1b; }
+  .MORE_INFORMATION_REQUIRED { border-left: 6px solid #888; }
+  .INFEASIBLE_UNDER_VERIFIED_CONSTRAINTS { border-left: 6px solid #c0392b; }
+  .check { font-size: 0.85rem; margin: 0.15rem 0; padding: 0.15rem 0.4rem; border-radius: 4px; }
+  .ok { color: #2e9e3e; }
+  .concern { color: #d99a1b; }
+  .fail { color: #c0392b; }
+  .evidence { font-size: 0.85rem; color: #333; background: #f7f7f7; padding: 0.5rem; border-radius: 6px; margin: 0.4rem 0; }
+  .rationale { font-style: italic; margin-top: 1rem; }
+  #result { margin-top: 1.5rem; }
+</style>
+</head>
+<body>
+<h1>FieldShift</h1>
+<p class="sub">Kayonza pilot — real NASA POWER climate history + real FAO GAEZ v5 suitability evidence + a source-backed Rwanda crop catalogue.</p>
+
+<form id="farmer-form">
+  <fieldset>
+    <legend>Field</legend>
+    <div class="row">
+      <div><label>Latitude</label><input type="number" step="0.001" id="latitude" value="-1.883"></div>
+      <div><label>Longitude</label><input type="number" step="0.001" id="longitude" value="30.644"></div>
+      <div><label>Irrigation available?</label>
+        <select id="has_irrigation"><option value="false">No</option><option value="true">Yes</option></select>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>What do you want to grow?</legend>
+    <div class="row">
+      <div><label><input type="checkbox" id="crop_maize" checked> Maize</label></div>
+      <div><label><input type="checkbox" id="crop_beans" checked> Beans</label></div>
+    </div>
+    <label><input type="checkbox" id="allow_outside"> Allow FieldShift to suggest other crops too</label>
+  </fieldset>
+
+  <fieldset>
+    <legend>History and timing</legend>
+    <div class="row">
+      <div><label>Previous crop</label>
+        <select id="previous_crop"><option value="maize">Maize</option><option value="beans" selected>Beans</option><option value="">None / unknown</option></select>
+      </div>
+      <div><label>Planting window start</label><input type="date" id="planting_start" value="2026-09-20"></div>
+      <div><label>Harvest deadline</label><input type="date" id="harvest_deadline" value="2027-01-20"></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Household goal and resources</legend>
+    <div class="row">
+      <div><label>Primary goal</label>
+        <select id="household_goal"><option value="food">Food</option><option value="income">Income</option><option value="both">Both</option></select>
+      </div>
+      <div><label>Budget (RWF, optional)</label><input type="number" id="budget_rwf" placeholder="leave blank if unknown"></div>
+    </div>
+  </fieldset>
+
+  <button type="submit">Get recommendation</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+const form = document.getElementById('farmer-form');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const desired = [];
+  if (document.getElementById('crop_maize').checked) desired.push('maize');
+  if (document.getElementById('crop_beans').checked) desired.push('beans');
+  const prev = document.getElementById('previous_crop').value;
+  const budget = document.getElementById('budget_rwf').value;
+
+  const payload = {
+    latitude: parseFloat(document.getElementById('latitude').value),
+    longitude: parseFloat(document.getElementById('longitude').value),
+    has_irrigation: document.getElementById('has_irrigation').value === 'true',
+    desired_crops: desired,
+    allow_outside_suggestions: document.getElementById('allow_outside').checked,
+    previous_crops: prev ? [prev] : [],
+    planting_window_start: document.getElementById('planting_start').value,
+    harvest_deadline: document.getElementById('harvest_deadline').value,
+    household_goal: document.getElementById('household_goal').value,
+    budget_rwf: budget ? parseFloat(budget) : null,
+  };
+
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = '<p>Computing — pulling real NASA POWER history and GAEZ v5 pilot evidence…</p>';
+
+  try {
+    const resp = await fetch('/api/recommend', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
+    });
+    if (!resp.ok) { resultDiv.innerHTML = '<p style="color:#c0392b">Error: ' + await resp.text() + '</p>'; return; }
+    const rec = await resp.json();
+    render(rec);
+  } catch (err) {
+    resultDiv.innerHTML = '<p style="color:#c0392b">Request failed: ' + err + '</p>';
+  }
+});
+
+function render(rec) {
+  const resultDiv = document.getElementById('result');
+  let html = '';
+  for (const a of rec.assessments) {
+    html += `<div class="card ${a.classification}">`;
+    html += `<h3>${a.crop_id.toUpperCase()} — ${a.classification}</h3>`;
+    if (a.gaez_evidence) {
+      const g = a.gaez_evidence;
+      html += `<div class="evidence"><b>GAEZ v5:</b> index ${g.suitability_index}, class "${g.suitability_class}", attainable yield ${g.attainable_yield_kg_ha} kg/ha (${g.scenario})</div>`;
+    }
+    if (a.climate_evidence) {
+      const c = a.climate_evidence;
+      html += `<div class="evidence"><b>NASA POWER</b> (${c.years_analyzed.join(', ')}): mean rainfall ${c.mean_total_rainfall_mm} mm, longest dry spell avg ${c.mean_longest_dry_spell_days}d, mean Tmax ${c.mean_tmax_c}°C</div>`;
+    }
+    for (const check of a.checks) {
+      const cls = !check.passed ? 'fail' : (check.concern ? 'concern' : 'ok');
+      const tag = !check.passed ? 'FAIL' : (check.concern ? 'CONCERN' : 'OK');
+      html += `<div class="check ${cls}">[${tag}] <b>${check.name}</b>: ${check.detail}</div>`;
+    }
+    html += '</div>';
+  }
+  html += `<p class="rationale"><b>Preferred crop:</b> ${rec.preferred_crop_id ?? '(none — see shortlist/rationale)'}<br>`;
+  html += `<b>Shortlist:</b> ${rec.shortlist.join(', ') || '(none)'}<br>`;
+  html += `<b>Rationale:</b> ${rec.decision_rationale}</p>`;
+  resultDiv.innerHTML = html;
+}
+</script>
+</body>
+</html>

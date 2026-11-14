@@ -1,0 +1,110 @@
+{
+  "pilot_point": {
+    "lat": -1.883,
+    "lon": 30.644,
+    "name": "Kayonza, Eastern Province, Rwanda"
+  },
+  "scenario": "SSP=HIST, INPUT=LRLM (rainfed, low-input), CLIMATE_DATA_SOURCE=AGERA5, PERIOD=HP0120 (2001-2020)",
+  "crops": {
+    "maize": {
+      "crop_code": "MZE",
+      "suitability_index": 23.9,
+      "suitability_class": "mS - marginally suitable",
+      "attainable_yield_kg_ha": 3170.0,
+      "scenario": "SSP=HIST, INPUT=LRLM (rainfed, low-input), CLIMATE_DATA_SOURCE=AGERA5, PERIOD=HP0120 (2001-2020)",
+      "source": "FAO GAEZ v5, RES05-SXX/SIX/YXX mapsets, crop code MZE, scenario HIST/AGERA5/LRLM/HP0120. Files: https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-SXX/GAEZ-V5.RES05-SXX.HP0120.AGERA5.HIST.MZE.LRLM.tif | https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-SIX/GAEZ-V5.RES05-SIX.HP0120.AGERA5.HIST.MZE.LRLM.tif | https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-YXX/GAEZ-V5.RES05-YXX.HP0120.AGERA5.HIST.MZE.LRLM.tif",
+      "retrieval_note": "suitability_class derived from suitability_index using GAEZ v5 Module V's published class-boundary percentages (VS>=80, S>=60, MS>=40, mS>=20, vmS>0, NS=0), NOT by decoding the RES05-SIX raster's raw integer legend (FAO does not publish that legend; raw RES05-SIX pixel value recorded here for cross-check only: 6.0). SXX raster units are suitability index x100 (0-10000 scale); divided by 100 here. YXX units are kg/ha dry matter, rainfed low-input historical (2001-2020) scenario -- this is GAEZ's modeled attainable-yield CEILING, not an observed or variety-specific yield.",
+      "raw_samples": {
+        "SXX": {
+          "raw_value": 2389.0,
+          "nodata_value": -9.0,
+          "is_nodata": false,
+          "crs": "EPSG:4326",
+          "resolution_deg": [
+            0.08333333333333333,
+            0.08333333333333333
+          ],
+          "band_count": 1,
+          "dtype": "int16",
+          "source_url": "https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-SXX/GAEZ-V5.RES05-SXX.HP0120.AGERA5.HIST.MZE.LRLM.tif"
+        },
+        "SIX": {
+          "raw_value": 6.0,
+          "nodata_value": 0.0,
+          "is_nodata": false,
+          "crs": "EPSG:4326",
+          "resolution_deg": [
+            0.08333333333333333,
+            0.08333333333333333
+          ],
+          "band_count": 1,
+          "dtype": "uint8",
+          "source_url": "https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-SIX/GAEZ-V5.RES05-SIX.HP0120.AGERA5.HIST.MZE.LRLM.tif"
+        },
+        "YXX": {
+          "raw_value": 3170.0,
+          "nodata_value": -9.0,
+          "is_nodata": false,
+          "crs": "EPSG:4326",
+          "resolution_deg": [
+            0.08333333333333333,
+            0.08333333333333333
+          ],
+          "band_count": 1,
+          "dtype": "float32",
+          "source_url": "https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-YXX/GAEZ-V5.RES05-YXX.HP0120.AGERA5.HIST.MZE.LRLM.tif"
+        }
+      }
+    },
+    "beans": {
+      "crop_code": "PHB",
+      "suitability_index": 20.9,
+      "suitability_class": "mS - marginally suitable",
+      "attainable_yield_kg_ha": 925.0,
+      "scenario": "SSP=HIST, INPUT=LRLM (rainfed, low-input), CLIMATE_DATA_SOURCE=AGERA5, PERIOD=HP0120 (2001-2020)",
+      "source": "FAO GAEZ v5, RES05-SXX/SIX/YXX mapsets, crop code PHB, scenario HIST/AGERA5/LRLM/HP0120. Files: https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-SXX/GAEZ-V5.RES05-SXX.HP0120.AGERA5.HIST.PHB.LRLM.tif | https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-SIX/GAEZ-V5.RES05-SIX.HP0120.AGERA5.HIST.PHB.LRLM.tif | https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-YXX/GAEZ-V5.RES05-YXX.HP0120.AGERA5.HIST.PHB.LRLM.tif",
+      "retrieval_note": "suitability_class derived from suitability_index using GAEZ v5 Module V's published class-boundary percentages (VS>=80, S>=60, MS>=40, mS>=20, vmS>0, NS=0), NOT by decoding the RES05-SIX raster's raw integer legend (FAO does not publish that legend; raw RES05-SIX pixel value recorded here for cross-check only: 6.0). SXX raster units are suitability index x100 (0-10000 scale); divided by 100 here. YXX units are kg/ha dry matter, rainfed low-input historical (2001-2020) scenario -- this is GAEZ's modeled attainable-yield CEILING, not an observed or variety-specific yield.",
+      "raw_samples": {
+        "SXX": {
+          "raw_value": 2093.0,
+          "nodata_value": -9.0,
+          "is_nodata": false,
+          "crs": "EPSG:4326",
+          "resolution_deg": [
+            0.08333333333333333,
+            0.08333333333333333
+          ],
+          "band_count": 1,
+          "dtype": "int16",
+          "source_url": "https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-SXX/GAEZ-V5.RES05-SXX.HP0120.AGERA5.HIST.PHB.LRLM.tif"
+        },
+        "SIX": {
+          "raw_value": 6.0,
+          "nodata_value": 0.0,
+          "is_nodata": false,
+          "crs": "EPSG:4326",
+          "resolution_deg": [
+            0.08333333333333333,
+            0.08333333333333333
+          ],
+          "band_count": 1,
+          "dtype": "uint8",
+          "source_url": "https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-SIX/GAEZ-V5.RES05-SIX.HP0120.AGERA5.HIST.PHB.LRLM.tif"
+        },
+        "YXX": {
+          "raw_value": 925.0,
+          "nodata_value": -9.0,
+          "is_nodata": false,
+          "crs": "EPSG:4326",
+          "resolution_deg": [
+            0.08333333333333333,
+            0.08333333333333333
+          ],
+          "band_count": 1,
+          "dtype": "float32",
+          "source_url": "https://storage.googleapis.com/fao-gismgr-gaez-v5-data/DATA/GAEZ-V5/MAPSET/RES05-YXX/GAEZ-V5.RES05-YXX.HP0120.AGERA5.HIST.PHB.LRLM.tif"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "_README": "Source-backed Rwanda crop catalogue for the FieldShift Kayonza pilot. Every duration/variety/constraint fact is tagged with provenance below. Where a figure in the underlying research was flagged as unverified or general (non-Rwanda-specific) agronomic knowledge, that caveat is carried into field_constraints/rotation_notes/provenance verbatim rather than silently treated as fact. This catalogue models ONE representative RAB-linked variety per crop for the Kayonza pilot demo; GAEZ evidence (gaez_adapter.py) is species-level and independent of variety choice, per Stage C guidance not to treat GAEZ species outputs as variety-specific predictions.",
+  "crops": [
+    {
+      "crop_id": "maize",
+      "crop_name": "Maize (Zea mays)",
+      "variety_name": "RHM1407 (RAB-linked hybrid; representative short-duration pilot variety)",
+      "family": "Poaceae",
+      "duration_days_min": 80,
+      "duration_days_max": 90,
+      "planting_windows": [
+        "Season A (national convention): planting Sept–Dec, harvest Jan–Feb",
+        "Season B (national convention): planting Mar–Jun"
+      ],
+      "field_constraints": [
+        "Eastern Province (incl. Kayonza) Season A rains are documented as shorter, later-onset and more erratic than the national pattern; RAB officials are quoted (2025) stating that if rain fails to arrive within ~3 weeks of planting, maize establishment is compromised in Kayonza/Kirehe.",
+        "Fall Armyworm (FAW, detected Rwanda 2017) and Maize Lethal Necrosis (MLN) are documented, RAB-recognized risks nationally; RAB breeding programs target both as active priorities.",
+        "RHM1407's ~85-day duration and ~6 t/ha figure come from farmer/news reporting (AllAfrica/New Times, Jan 2026) of a RAB-linked variety-selection exercise, not a RAB variety-release datasheet directly retrieved — treated as credible but secondary-sourced."
+      ],
+      "rotation_notes": "Legume rotation (bean or soybean before maize) is documented Rwanda agronomic guidance: the legume should not receive N fertilizer itself; manure or half-manure/half-DAP should instead go to the following maize, which shows improved N/P uptake after a legume predecessor (Eastern Province-focused Kenyatta University thesis, found via search synthesis of the PDF, not independently re-read). IMPORTANT TIMING CAVEAT from the same source: in Bugesera (an Eastern Province area agronomically similar to Kayonza), maize planted after a long-duration soybean failed to yield any grain because the legume delayed maize planting too far into the dry period — i.e. in short-rain, erratic-onset Eastern Province conditions, the preceding legume's duration must leave enough of the rain window for maize, or the rotation can backfire.",
+      "provenance": "RAB Cereals Program (https://www.rab.gov.rw/1-1/news/cereals-program); AllAfrica 'Rwanda: Farmers Pick Climate-Smart Seeds That Double Yields' (Jan 2026, https://allafrica.com/stories/202601020015.html); MINAGRI FAW response (https://www.minagri.gov.rw/updates/news-details/government-intensifies-efforts-to-contain-fall-armyworms); UN Rwanda FAW monitoring (https://rwanda.un.org/en/node/3066); Meteo Rwanda Crop Monitor bulletins Sept/Dec 2021 (meteorwanda.gov.rw) documenting Kayonza-specific late-rain damage to maize; AllAfrica Sept 2025 Kayonza farmer/RAB quotes on short-cycle drought-tolerant variety need (https://allafrica.com/stories/202509030320.html, read via search-engine summary — direct fetch returned HTTP 403)."
+    },
+    {
+      "crop_id": "beans",
+      "crop_name": "Common bean (Phaseolus vulgaris)",
+      "variety_name": "RWV 3006 (RAB-released 2012; bush-type assumed, growth habit not independently confirmed)",
+      "family": "Fabaceae",
+      "duration_days_min": 115,
+      "duration_days_max": 120,
+      "planting_windows": [
+        "Season A (national convention): planting Sept–Dec, harvest Jan–Feb",
+        "Season B (national convention): planting Mar–Jun"
+      ],
+      "field_constraints": [
+        "No Kayonza-specific bean planting window distinct from the national Season A/B dates was found in sources; the national window is used with the same Eastern Province late/erratic-onset caveat documented for maize in the same Dec 2021 Crop Monitor bulletin (which reports BOTH maize and bean crops in Kayonza affected by late rainfall/dry weather during germination/vegetative growth).",
+        "Documented Rwanda-relevant bean disease constraints: Angular Leaf Spot, bean root rot, anthracnose, Common Bacterial Blight, Bean Common Mosaic Virus/BCMNV — RAB's Rwerere station is used as an anthracnose resistance-screening hotspot.",
+        "RWV3006's 120-day duration is drawn from a peer-reviewed table (Agriculture & Food Security journal) stating it sourced maturity/release data from official RAB release records — the strongest-provenance duration figure found for any single Rwandan bean variety. Growth habit (bush vs climbing) for RWV3006 was NOT independently confirmed.",
+        "Faster alternatives exist in the catalogue literature but with weaker provenance: RWV2070 and RWV3316 are both reported at 110 days (same journal table); a 2021 RAB/CIAT/PABRA release of 19 new varieties (13 climbing, 6 bush) exists but individual variety names/durations for that batch could not be found in any source checked."
+      ],
+      "rotation_notes": "Common bean fixes atmospheric nitrogen and should not be top-dressed with N fertilizer; Rwanda guidance directs manure/DAP to the following cereal instead. Rotation with a cereal (maize) is documented as helping break pest/disease cycles for both crops. Maize-bean rotation/intercropping is widely described as common Rwandan practice, but no single official RAB/FAO document spelling out exact spacing/timing protocol was located — the rotation *rationale* is well-sourced, the precise agronomic protocol is not.",
+      "provenance": "RAB 'RAB Launches 19 New Varieties of Beans' (https://www.rab.gov.rw/1-1/news-details/rab-launches-19-new-varieties-of-beans); CGIAR release summary (https://www.cgiar.org/news-events/news/farmer-preferred-market-demanded-and-highly-nutritious-beans-to-boost-rwandas-household-diets-and-wealth); Agriculture & Food Security journal, Table 4 of PPB trial variety characteristics citing official RAB release data (https://agricultureandfoodsecurity.biomedcentral.com/articles/10.1186/s40066-016-0062-8/tables/4); Crop Trust/CIAT genebank impact brief on CAB2-derived Rwandan bean pedigrees; Meteo Rwanda Crop Monitor bulletin December 2021 (Kayonza bean/maize late-rain impact); MSU Legume Lab Technical Progress Report (bean disease constraints, https://www.canr.msu.edu/legumelab/uploads/files/MSU-1%20Tech%20Prog%20Rpt%20FY11%20Final.pdf)."
+    }
+  ]
+}

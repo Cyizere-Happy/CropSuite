@@ -1,0 +1,7 @@
+rasterio
+numpy
+requests
+pytest
+fastapi
+uvicorn
+truststore
