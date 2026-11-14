@@ -3,4 +3,5 @@ __pycache__/
 *.pyc
 data/gaez/raw/
 .pytest_cache/
-.env
+config.bat
+node_modules

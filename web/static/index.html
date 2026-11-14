@@ -79,6 +79,7 @@
 </form>
 
 <div id="result"></div>
+<div id="forecast-box"></div>
 
 <script>
 const form = document.getElementById('farmer-form');
@@ -113,10 +114,26 @@ form.addEventListener('submit', async (e) => {
     if (!resp.ok) { resultDiv.innerHTML = '<p style="color:#c0392b">Error: ' + await resp.text() + '</p>'; return; }
     const rec = await resp.json();
     render(rec);
+    renderForecast(payload.latitude, payload.longitude);
   } catch (err) {
     resultDiv.innerHTML = '<p style="color:#c0392b">Request failed: ' + err + '</p>';
   }
 });
+
+async function renderForecast(lat, lon) {
+  const box = document.getElementById('forecast-box');
+  try {
+    const resp = await fetch(`/api/forecast?latitude=${lat}&longitude=${lon}&days=7`);
+    const fc = await resp.json();
+    if (!fc.available) { box.innerHTML = `<p class="evidence">Near-term forecast (Meteomatics) unavailable: ${fc.reason}</p>`; return; }
+    const days = Object.keys(fc.daily_tmean_c);
+    let rows = days.map(d => `<tr><td>${d}</td><td>${fc.daily_tmean_c[d]}°C</td><td>${fc.daily_precip_mm[d]} mm</td></tr>`).join('');
+    box.innerHTML = `<div class="evidence"><b>Next 7 days (Meteomatics forecast — advisory only, separate from the historical evidence above):</b>
+      <table style="width:100%; margin-top:0.4rem; font-size:0.85rem;"><tr><th>Date</th><th>Mean temp</th><th>Precip (24h)</th></tr>${rows}</table></div>`;
+  } catch (err) {
+    box.innerHTML = `<p class="evidence">Near-term forecast request failed: ${err}</p>`;
+  }
+}
 
 function render(rec) {
   const resultDiv = document.getElementById('result');
