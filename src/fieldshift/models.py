@@ -88,6 +88,24 @@ class ClimateEvidence:
 
 
 @dataclass(frozen=True)
+class NearTermOutlook:
+    """Meteomatics-sourced short-range forecast, for advisory display only.
+
+    This is operational near-term guidance (days, not historical years) and
+    is deliberately kept out of the feasibility engine's classification: it
+    is never combined with NASA POWER's historical statistics or GAEZ's
+    suitability evidence, which answer a different question (what has
+    historically happened / what the land is modeled to support) than
+    "what does the forecast say for the next few days."
+    """
+    latitude: float
+    longitude: float
+    daily_tmean_c: dict[str, float]            # ISO date -> forecast mean temp (C)
+    daily_precip_mm: dict[str, float]           # ISO date -> forecast 24h precipitation (mm)
+    source: str = "Meteomatics Weather API (api.meteomatics.com)"
+
+
+@dataclass(frozen=True)
 class CropVariety:
     crop_id: str
     crop_name: str

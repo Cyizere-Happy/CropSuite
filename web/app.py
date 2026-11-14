@@ -20,6 +20,7 @@ from pydantic import BaseModel
 
 from fieldshift.crop_catalogue import load_catalogue
 from fieldshift.gaez_adapter import make_gaez_lookup
+from fieldshift.meteomatics_client import credentials_available, fetch_near_term_outlook
 from fieldshift.models import CropVariety, FarmerRequest, FieldLocation, HouseholdGoal
 from fieldshift.nasa_power import compute_climate_evidence
 from fieldshift.rotation_engine import build_recommendation
@@ -45,6 +46,19 @@ class RecommendRequest(BaseModel):
 @app.get("/api/catalogue")
 def get_catalogue():
     return jsonable_encoder(CATALOGUE)
+
+
+@app.get("/api/forecast")
+def get_forecast(latitude: float, longitude: float, days: int = 7):
+    """Near-term Meteomatics forecast, advisory only -- separate from the
+    historical NASA/GAEZ evidence that drives the feasibility classification.
+    """
+    if not credentials_available():
+        return {"available": False, "reason": "Meteomatics credentials not configured."}
+    outlook = fetch_near_term_outlook(latitude, longitude, days=days)
+    if outlook is None:
+        return {"available": False, "reason": "Forecast request failed."}
+    return {"available": True, **jsonable_encoder(outlook)}
 
 
 @app.post("/api/recommend")
